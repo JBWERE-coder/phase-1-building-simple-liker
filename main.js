@@ -3,7 +3,33 @@ const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
 
 // Your JavaScript code goes here!
+function handleHeartClick(event) {
+  const heart = event.target;
+  if (heart.innerText === EMPTY_HEART) {
+    mimicServerCall()
+      .then(() => {
+        heart.innerText = FULL_HEART;
+        heart.classList.add("activated-heart");
+      })
+      .catch((error) => {
+        const modal = document.getElementById("error-modal");
+        const errorMessage = document.getElementById("error-message");
+        errorMessage.innerText = error;
+        modal.classList.remove("hidden");
+        setTimeout(function() {
+          modal.classList.add("hidden");
+        }, 3000);
+      });
+  } else {
+    heart.innerText = EMPTY_HEART;
+    heart.classList.remove("activated-heart");
+  }
+}
 
+const hearts = document.getElementsByClassName("like");
+for (let i = 0; i < hearts.length; i++) {
+  hearts[i].addEventListener("click", handleHeartClick);
+}
 
 
 
